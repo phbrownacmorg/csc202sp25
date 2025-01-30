@@ -8,7 +8,7 @@ def is_leap_year(year: int) -> bool:
     using the rules for the Gregorian calendar."""
     # Precondition: year is late enough that the Gregorian calendar
     #   actually existed
-    #assert year > 1582, "Year is pre-Gregorian"
+    assert year > 1582, "Year is pre-Gregorian"
     # Gregorian leap-year rules:
     #   - If a year is evenly divisible by 400, it's a leap year.
     #   - If it's evenly divisible by 100 but not by 400, it's not a leap year.
