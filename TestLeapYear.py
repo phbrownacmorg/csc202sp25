@@ -44,7 +44,7 @@ class TestNothing(unittest.TestCase):
         with self.assertRaises(AssertionError):
             leapyear.is_leap_year(1582)
 
-    # Bottom bondary of the dates that are not too early
+    # Bottom boundary of the dates that are not too early
     def test1583(self) -> None:
         self.assertFalse(leapyear.is_leap_year(1583))
 
