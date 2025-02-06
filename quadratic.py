@@ -1,4 +1,6 @@
 import math
+# Global constant
+EPSILON: float = 0.0000001
 
 def read_quadratic() -> tuple[float, float, float]:
     """Read the coefficients for a quadratic in the form
@@ -11,13 +13,22 @@ def read_quadratic() -> tuple[float, float, float]:
 
 def find_roots(a: float, b: float, c: float) -> tuple[float, float]:
     """Find the roots of a quadratic A*x**2 + B*x + C = 0, and return them
-    as a tuple.  If there are no real roots, this function raises a ValueError
-    complaining about 'math domain error'."""
-    #root1, root2 = math.nan, math.nan
+    as a tuple.  If there are no real roots, this function raises an 
+    AssertionError with the message 'There are no real roots.'."""
+    # Precondition:
+    # a, b, and c have to be numbers
+
     determinant: float = b**2 - 4*a*c
+    # Executable assertion
+    assert determinant >= 0, "There are no real roots."
     #print(determinant) # for testing
     root1 = (-b + math.sqrt(determinant)) / (2*a)
     root2 = (-b - math.sqrt(determinant)) / (2*a)
+    # Postcondition:
+    # The roots should solve the system
+    # Allow for floating-point imprecision (like using assertAlmostEqual)
+    assert abs(a*root1**2 + b*root1 + c) < EPSILON and \
+        abs(a*root2**2 + b*root2 + c) < EPSILON, "Failed postcondition"
     return root1, root2
 
 def main(args: list[str]) -> int:
@@ -32,13 +43,10 @@ def main(args: list[str]) -> int:
 
         try:
             # find the root(s)
-            root1, root2 = find_roots(a, b, c)    
-            # print the root(s)
-            if not math.isnan(root1): # if root1 is real, so is root2
-                print('The roots are', root1, 'and', root2)
-        except ValueError as e:
-            if e.args[0] == 'math domain error':
-                print('There are no real roots.')
+            root1, root2 = find_roots(a, b, c)
+            print('The roots are', root1, 'and', root2)                
+        except AssertionError as e:
+            print(e)
     return 0
 
 if __name__ == '__main__':

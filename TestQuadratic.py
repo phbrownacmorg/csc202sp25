@@ -34,7 +34,7 @@ class TestQuadratic(unittest.TestCase):
 
     # Negative determinant
     def test2_1_2(self) -> None:
-        with self.assertRaises(ValueError):
+        with self.assertRaises(AssertionError):
             roots: tuple[float, float] = quadratic.find_roots(2, 1, 2)
 
 if __name__ == '__main__':
