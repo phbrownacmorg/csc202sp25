@@ -12,10 +12,17 @@ class TestPlayingCard(unittest.TestCase):
             with self.subTest(suit=suit):
                 self.assertEqual(PlayingCard(suit, 'jack').suit(), suit)
 
-    def testVal(self) -> None:
+    def testRank(self) -> None:
         for rank in PlayingCard.RANKS:
             with self.subTest(rank=rank):
                 self.assertEqual(PlayingCard('diamonds', rank).rank(), rank)
+
+    def testStr(self) -> None:
+        for suit in PlayingCard.SUITS:
+            for rank in PlayingCard.RANKS:
+                with self.subTest(suit=suit, rank=rank):
+                    card: PlayingCard = PlayingCard(suit, rank)
+                    self.assertEqual(str(card), card.rank() + ' of ' + card.suit())
 
     def testEq(self) -> None:
         for suit1 in PlayingCard.SUITS:
@@ -31,6 +38,20 @@ class TestPlayingCard(unittest.TestCase):
                                 self.assertFalse(card1 == card2)
                             self.assertFalse(card1 == 'not a card')
 
+    def testNe(self) -> None:
+        for suit1 in PlayingCard.SUITS:
+            for rank1 in PlayingCard.RANKS:
+                for suit2 in PlayingCard.SUITS:
+                    for rank2 in PlayingCard.RANKS:
+                        with self.subTest(suit1=suit1,rank1=rank1,suit2=suit2,rank2=rank2):
+                            card1: PlayingCard = PlayingCard(suit1, rank1)
+                            card2: PlayingCard = PlayingCard(suit2, rank2)
+                            if suit1 != suit2 or rank1 != rank2:
+                                self.assertTrue(card1 != card2)
+                            else:
+                                self.assertFalse(card1 != card2)
+                            self.assertTrue(card1 != 'not a card')
+
     def testLt(self) -> None:
         for suit1 in PlayingCard.SUITS:
             for rank1 in PlayingCard.RANKS:
@@ -39,19 +60,81 @@ class TestPlayingCard(unittest.TestCase):
                         with self.subTest(suit1=suit1,rank1=rank1,suit2=suit2,rank2=rank2):
                             card1: PlayingCard = PlayingCard(suit1, rank1)
                             card2: PlayingCard = PlayingCard(suit2, rank2)
-                            val1: int = PlayingCard.RANKS.index(card1.rank())
-                            val2: int = PlayingCard.RANKS.index(card2.rank())
-                            if val1 != val2:
-                                self.assertEqual(card1 < card2, val1 < val2)
-                            else: # val1 == val2 => card1.rank() == card2.rank()
+                            r1: int = PlayingCard.RANKS.index(card1.rank())
+                            r2: int = PlayingCard.RANKS.index(card2.rank())
+                            if rank1 != rank2:
+                                self.assertEqual(card1 < card2, r1 < r2)
+                            else: # rank1 == rank2 => card1.rank() == card2.rank()
                                 # Comparison should be based on suits
                                 s1: int = PlayingCard.SUITS.index(card1.suit())
                                 s2: int = PlayingCard.SUITS.index(card2.suit())
                                 self.assertEqual(card1 < card2, s1 < s2)
 
+    def testLe(self) -> None:
+        for suit1 in PlayingCard.SUITS:
+            for rank1 in PlayingCard.RANKS:
+                for suit2 in PlayingCard.SUITS:
+                    for rank2 in PlayingCard.RANKS:
+                        with self.subTest(suit1=suit1,rank1=rank1,suit2=suit2,rank2=rank2):
+                            card1: PlayingCard = PlayingCard(suit1, rank1)
+                            card2: PlayingCard = PlayingCard(suit2, rank2)
+                            r1: int = PlayingCard.RANKS.index(card1.rank())
+                            r2: int = PlayingCard.RANKS.index(card2.rank())
+                            if rank1 != rank2:
+                                self.assertEqual(card1 <= card2, r1 < r2)
+                            else: # rank1 == rank2 => card1.rank() == card2.rank()
+                                # Comparison should be based on suits
+                                s1: int = PlayingCard.SUITS.index(card1.suit())
+                                s2: int = PlayingCard.SUITS.index(card2.suit())
+                                self.assertEqual(card1 <= card2, s1 <= s2)
+
+    def testGt(self) -> None:
+        for suit1 in PlayingCard.SUITS:
+            for rank1 in PlayingCard.RANKS:
+                for suit2 in PlayingCard.SUITS:
+                    for rank2 in PlayingCard.RANKS:
+                        with self.subTest(suit1=suit1,rank1=rank1,suit2=suit2,rank2=rank2):
+                            card1: PlayingCard = PlayingCard(suit1, rank1)
+                            card2: PlayingCard = PlayingCard(suit2, rank2)
+                            r1: int = PlayingCard.RANKS.index(card1.rank())
+                            r2: int = PlayingCard.RANKS.index(card2.rank())
+                            if rank1 != rank2:
+                                self.assertEqual(card1 > card2, r1 > r2)
+                            else: # rank1 == rank2 => card1.rank() == card2.rank()
+                                # Comparison should be based on suits
+                                s1: int = PlayingCard.SUITS.index(card1.suit())
+                                s2: int = PlayingCard.SUITS.index(card2.suit())
+                                self.assertEqual(card1 > card2, s1 > s2)
+
+    def testGe(self) -> None:
+        for suit1 in PlayingCard.SUITS:
+            for rank1 in PlayingCard.RANKS:
+                for suit2 in PlayingCard.SUITS:
+                    for rank2 in PlayingCard.RANKS:
+                        with self.subTest(suit1=suit1,rank1=rank1,suit2=suit2,rank2=rank2):
+                            card1: PlayingCard = PlayingCard(suit1, rank1)
+                            card2: PlayingCard = PlayingCard(suit2, rank2)
+                            r1: int = PlayingCard.RANKS.index(card1.rank())
+                            r2: int = PlayingCard.RANKS.index(card2.rank())
+                            if rank1 != rank2:
+                                self.assertEqual(card1 >= card2, r1 > r2)
+                            else: # rank1 == rank2 => card1.rank() == card2.rank()
+                                # Comparison should be based on suits
+                                s1: int = PlayingCard.SUITS.index(card1.suit())
+                                s2: int = PlayingCard.SUITS.index(card2.suit())
+                                self.assertEqual(card1 >= card2, s1 >= s2)
+
+
     def testMakeDeck(self) -> None:
         deck: list[AbstractCard] = PlayingCard.makeDeck()
-        self.assertEqual(len(deck), 52)
+        self.assertEqual(len(deck), 52) # 52 cards total
+
+        # One of each card
+        for suit in PlayingCard.SUITS:
+            for rank in PlayingCard.RANKS:
+                with self.subTest(suit=suit, rank=rank):
+                    self.assertEqual(deck.count(PlayingCard(suit, rank)), 1)
+ 
 
 if __name__ == '__main__':
     unittest.main()

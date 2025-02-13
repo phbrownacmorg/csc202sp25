@@ -7,10 +7,10 @@ class AbstractCard(abc.ABC):
     This class basically handles suits and ranks.
     Cards are immutable once created."""
 
-    # Set of possible suits
+    # Set of possible suits (class variable)
     SUITS: tuple[str,...] = ()
 
-    # Set of possible ranks (names) of cards
+    # Set of possible ranks (names) of cards (class variable)
     RANKS: tuple[str,...] = ()
 
     def _invariant(self) -> bool:
@@ -39,13 +39,17 @@ class AbstractCard(abc.ABC):
         """Get the card's rank."""
         return self._rank
     
+    def __str__(self) -> str:
+        """Return a string representation of this card."""
+        return (self.suit() + " " + self.rank()).strip()
+    
     def __eq__(self, other: object) -> bool:
         """Test a card for equality with another object.
         If the suits are equal and the ranks are equal,
         the cards are equal."""
         equal: bool = hasattr(other, 'suit') and hasattr(other, 'rank')
-        equal = equal and (self.suit() == other.suit()) and \
-            (self.rank() == other.rank())
+        equal = equal and \
+            (self.suit() == other.suit()) and (self.rank() == other.rank()) # type: ignore
         return equal
 
     def __lt__(self, other:'AbstractCard') -> bool:
