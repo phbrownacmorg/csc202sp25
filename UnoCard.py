@@ -13,23 +13,10 @@ class UnoCard(AbstractCard):
     WILD_RANKS: tuple[str,...] = ('', 'draw 4')
     RANKS: tuple[str, ...] = COLOR_RANKS + WILD_RANKS
 
-    def _invariant(self) -> bool:
-        """Class invariant."""
-        valid: bool = False
-        suit: str = self.suit()
-        rank: str = self.rank()
-        if suit in self.COLOR_SUITS and rank in self.COLOR_RANKS:
-            valid = True
-        elif suit in self.WILD_SUITS and rank in self.WILD_RANKS:
-            valid = True
-        return valid
-    
-    def __init__(self, suit: str, rank: str) -> None:
-        """Constructor."""
-        # Pre:
-        assert (suit in self.COLOR_SUITS and rank in self.COLOR_RANKS) or \
-                (suit in self.WILD_SUITS and rank in self.WILD_RANKS), "Failed precondition"
-        super().__init__(suit, rank)
+    @classmethod
+    def _legalCombo(cls, suit: str, rank: str) -> bool:
+        return (suit in cls.COLOR_SUITS and rank in cls.COLOR_RANKS) or \
+                (suit in cls.WILD_SUITS and rank in cls.WILD_RANKS)
 
     @classmethod
     def makeDeck(cls) -> list[AbstractCard]:

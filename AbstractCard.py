@@ -13,18 +13,20 @@ class AbstractCard(abc.ABC):
     # Set of possible ranks (names) of cards (class variable)
     RANKS: tuple[str,...] = ()
 
+    @classmethod
+    def _legalCombo(cls, suit: str, rank: str) -> bool:
+        """Class method to determine whether a combination of SUIT and RANK could produce a legal card."""
+        # Pre: none
+        return suit in cls.SUITS and rank in cls.RANKS
+
     def _invariant(self) -> bool:
         """Class invariant."""
-        valid: bool = self.suit() in self.SUITS
-        assert valid, 'suit() failed: ' + self.suit()
-        valid = valid and (self.rank() in self.RANKS)
-        assert valid, 'rank() failed: ' + self.rank()
-        return valid
+        return self._legalCombo(self.suit(), self.rank())
 
     def __init__(self, suit: str, rank: str) -> None:
         """Construct a card with the given suit and rank."""
         # Pre:
-        assert suit in self.SUITS and rank in self.RANKS, 'Failed precondition'
+        assert self._legalCombo(suit, rank), 'Failed precondition'
         self._suit: str = suit
         self._rank: str = rank
         # Post:

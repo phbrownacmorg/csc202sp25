@@ -24,19 +24,26 @@ class TestUnoCard(unittest.TestCase):
                 self.assertEqual(UnoCard('wild', rank).rank(), rank)
 
     def testStr(self) -> None:
-        for rank in UnoCard.COLOR_RANKS:
-            for suit in UnoCard.COLOR_SUITS:
-                with self.subTest(suit=suit, rank=rank):
-                    self.assertEqual(str(UnoCard(suit, rank)), suit + ' ' + rank)
-        for rank in UnoCard.WILD_RANKS:
-            for suit in UnoCard.WILD_SUITS:
-                with self.subTest(suit=suit, rank=rank):
-                    self.assertEqual(str(UnoCard(suit, rank)), 
-                                     (suit + ' ' + rank).strip())
+        for rank in UnoCard.RANKS:
+            for suit in UnoCard.SUITS:
+                if UnoCard._legalCombo(suit, rank):
+                    with self.subTest(suit=suit, rank=rank):
+                        self.assertEqual(str(UnoCard(suit, rank)), (suit + ' ' + rank).strip())
 
     def testEq(self) -> None:
-        self.assertTrue(UnoCard('blue', '4') == UnoCard('blue', '4'))
         # Make this test all combinations
+        for suit1 in UnoCard.SUITS:
+            for rank1 in UnoCard.RANKS:
+                if UnoCard._legalCombo(suit1, rank1):
+                    card1: UnoCard = UnoCard(suit1, rank1)
+                    with self.subTest(suit=suit1, rank=rank1):
+                        self.assertFalse(card1 == 'not a card')
+                    for suit2 in UnoCard.SUITS:
+                        for rank2 in UnoCard.RANKS:
+                            if UnoCard._legalCombo(suit2, rank2):
+                                card2: UnoCard = UnoCard(suit2, rank2)
+                                with self.subTest(suit1=suit1, rank1=rank1, suit2=suit2, rank2=rank2):
+                                    self.assertEqual(card1 == card2, suit1 == suit2 and rank1 == rank2)
 
     def testNe(self) -> None:
         self.assertFalse(UnoCard('blue', '4') != UnoCard('blue', '4'))
