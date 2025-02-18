@@ -23,6 +23,14 @@ class UnoCard(AbstractCard):
         """Make a deck of UnoCards."""
         deck: list[AbstractCard] = []
 
-        # FILL THIS IN
+        for suit in cls.SUITS:
+            for rank in cls.RANKS:
+                if cls._legalCombo(suit, rank):
+                    deck.append(UnoCard(suit, rank)) # At least one of every legal card
+                    if rank != '0':
+                        deck.append(UnoCard(suit, rank)) # At least two of all non-0's
+                        if suit in cls.WILD_SUITS:
+                            deck.append(UnoCard(suit, rank))
+                            deck.append(UnoCard(suit, rank)) # Four of each wild card
 
         return deck

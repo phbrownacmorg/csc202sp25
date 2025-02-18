@@ -69,7 +69,16 @@ class TestUnoCard(unittest.TestCase):
         deck: list[AbstractCard] = UnoCard.makeDeck()
         self.assertEqual(len(deck), 108) # 108 cards total
         # Add checks to make sure each card occurs the correct number of times
-
+        for suit in UnoCard.SUITS:
+            for rank in UnoCard.RANKS:
+                if UnoCard._legalCombo(suit, rank):
+                    with self.subTest(suit=suit, rank=rank):
+                        if rank == '0':
+                            self.assertEqual(deck.count(UnoCard(suit, rank)), 1)
+                        elif suit in UnoCard.WILD_SUITS:
+                            self.assertEqual(deck.count(UnoCard(suit, rank)), 4)
+                        else:
+                            self.assertEqual(deck.count(UnoCard(suit, rank)), 2)
 
 if __name__ == '__main__':
     unittest.main()
