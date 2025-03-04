@@ -5,6 +5,16 @@ from UnoCard import UnoCard
 
 class TestUnoCard(unittest.TestCase):
 
+    # Called before each new test
+    def setUp(self) -> None:
+        self._green4 = UnoCard('green', '4')
+        self._red4 = UnoCard('red', '4') # Same rank, suit is less: less
+        self._blue3 = UnoCard('blue', '3') # Suit is greater, rank is less: less
+        self._red5 = UnoCard('red', '5') # Suit is less, rank is greater: greater
+        self._green4_2 = UnoCard('green', '4') # Different objects, same value
+
+        return super().setUp()
+
     # Every method that starts with the string "test"
     # will be executed as a unit test
     def testSuit(self) -> None:
@@ -42,27 +52,137 @@ class TestUnoCard(unittest.TestCase):
                         for rank2 in UnoCard.RANKS:
                             if UnoCard._legalCombo(suit2, rank2):
                                 card2: UnoCard = UnoCard(suit2, rank2)
-                                with self.subTest(suit1=suit1, rank1=rank1, suit2=suit2, rank2=rank2):
-                                    self.assertEqual(card1 == card2, suit1 == suit2 and rank1 == rank2)
+                                with self.subTest(suit1=suit1, rank1=rank1, 
+                                                  suit2=suit2, rank2=rank2):
+                                    self.assertEqual(card1 == card2, 
+                                                     suit1 == suit2 and rank1 == rank2)
+        # Check defined combinations, to verify that my loops test what I think they test
+        self.assertFalse(self._green4 == self._red4)
+        self.assertFalse(self._green4 == self._blue3)
+        self.assertFalse(self._green4 == self._red5)
+        self.assertTrue(self._green4 == self._green4_2)
 
     def testNe(self) -> None:
-        self.assertFalse(UnoCard('blue', '4') != UnoCard('blue', '4'))
         # Make this test all combinations
+        for suit1 in UnoCard.SUITS:
+            for rank1 in UnoCard.RANKS:
+                if UnoCard._legalCombo(suit1, rank1):
+                    card1: UnoCard = UnoCard(suit1, rank1)
+                    with self.subTest(suit=suit1, rank=rank1):
+                        self.assertTrue(card1 != 'not a card')
+                    for suit2 in UnoCard.SUITS:
+                        for rank2 in UnoCard.RANKS:
+                            if UnoCard._legalCombo(suit2, rank2):
+                                card2: UnoCard = UnoCard(suit2, rank2)
+                                with self.subTest(suit1=suit1, rank1=rank1, 
+                                                  suit2=suit2, rank2=rank2):
+                                    self.assertEqual(card1 != card2, 
+                                                     suit1 != suit2 or rank1 != rank2)
+        # Check defined combinations, to verify that my loops test what I think they test
+        self.assertTrue(self._green4 != self._red4)
+        self.assertTrue(self._green4 != self._blue3)
+        self.assertTrue(self._green4 != self._red5)
+        self.assertFalse(self._green4 != self._green4_2)
     
     def testLt(self) -> None:
-        self.assertFalse(UnoCard('blue', '4') < UnoCard('blue', '4'))
         # Make this test all combinations
+        for suit1 in UnoCard.SUITS:
+            for rank1 in UnoCard.RANKS:
+                if UnoCard._legalCombo(suit1, rank1):
+                    card1: UnoCard = UnoCard(suit1, rank1)
+                    st1: int = UnoCard.SUITS.index(suit1)
+                    rnk1: int = UnoCard.RANKS.index(rank1)
+                    for suit2 in UnoCard.SUITS:
+                        for rank2 in UnoCard.RANKS:
+                            if UnoCard._legalCombo(suit2, rank2):
+                                card2: UnoCard = UnoCard(suit2, rank2)
+                                st2: int = UnoCard.SUITS.index(suit2)
+                                rnk2: int = UnoCard.RANKS.index(rank2)
+                                with self.subTest(suit1=suit1, rank1=rank1, 
+                                                  suit2=suit2, rank2=rank2):
+                                    self.assertEqual(card1 < card2, 
+                                                     rnk1 < rnk2 or (rank1 == rank2
+                                                                     and st1 < st2))
+        # Check defined combinations, to verify that my loops test what I think they test
+        self.assertFalse(self._green4 < self._red4)
+        self.assertFalse(self._green4 < self._blue3)
+        self.assertTrue(self._green4 < self._red5)
+        self.assertFalse(self._green4 < self._green4_2)
 
     def testLe(self) -> None:
-        self.assertTrue(UnoCard('blue', '4') <= UnoCard('blue', '4'))
         # Make this test all combinations
+        for suit1 in UnoCard.SUITS:
+            for rank1 in UnoCard.RANKS:
+                if UnoCard._legalCombo(suit1, rank1):
+                    card1: UnoCard = UnoCard(suit1, rank1)
+                    st1: int = UnoCard.SUITS.index(suit1)
+                    rnk1: int = UnoCard.RANKS.index(rank1)
+                    for suit2 in UnoCard.SUITS:
+                        for rank2 in UnoCard.RANKS:
+                            if UnoCard._legalCombo(suit2, rank2):
+                                card2: UnoCard = UnoCard(suit2, rank2)
+                                st2: int = UnoCard.SUITS.index(suit2)
+                                rnk2: int = UnoCard.RANKS.index(rank2)
+                                with self.subTest(suit1=suit1, rank1=rank1, 
+                                                  suit2=suit2, rank2=rank2):
+                                    self.assertEqual(card1 <= card2, 
+                                                     rnk1 < rnk2 or (rank1 == rank2
+                                                                     and st1 <= st2))
+        # Check defined combinations, to verify that my loops test what I think they test
+        self.assertFalse(self._green4 <= self._red4)
+        self.assertFalse(self._green4 <= self._blue3)
+        self.assertTrue(self._green4 <= self._red5)
+        self.assertTrue(self._green4 <= self._green4_2)
 
     def testGt(self) -> None:
-        self.assertFalse(UnoCard('blue', '4') > UnoCard('blue', '4'))
         # Make this test all combinations
+        for suit1 in UnoCard.SUITS:
+            for rank1 in UnoCard.RANKS:
+                if UnoCard._legalCombo(suit1, rank1):
+                    card1: UnoCard = UnoCard(suit1, rank1)
+                    st1: int = UnoCard.SUITS.index(suit1)
+                    rnk1: int = UnoCard.RANKS.index(rank1)
+                    for suit2 in UnoCard.SUITS:
+                        for rank2 in UnoCard.RANKS:
+                            if UnoCard._legalCombo(suit2, rank2):
+                                card2: UnoCard = UnoCard(suit2, rank2)
+                                st2: int = UnoCard.SUITS.index(suit2)
+                                rnk2: int = UnoCard.RANKS.index(rank2)
+                                with self.subTest(suit1=suit1, rank1=rank1, 
+                                                  suit2=suit2, rank2=rank2):
+                                    self.assertEqual(card1 > card2, 
+                                                     rnk1 > rnk2 or (rank1 == rank2
+                                                                     and st1 > st2))
+        # Check defined combinations, to verify that my loops test what I think they test
+        self.assertTrue(self._green4 > self._red4)
+        self.assertTrue(self._green4 > self._blue3)
+        self.assertFalse(self._green4 > self._red5)
+        self.assertFalse(self._green4 > self._green4_2)
 
     def testGe(self) -> None:
-        self.assertTrue(UnoCard('blue', '4') <= UnoCard('blue', '4'))
+        for suit1 in UnoCard.SUITS:
+            for rank1 in UnoCard.RANKS:
+                if UnoCard._legalCombo(suit1, rank1):
+                    card1: UnoCard = UnoCard(suit1, rank1)
+                    st1: int = UnoCard.SUITS.index(suit1)
+                    rnk1: int = UnoCard.RANKS.index(rank1)
+                    for suit2 in UnoCard.SUITS:
+                        for rank2 in UnoCard.RANKS:
+                            if UnoCard._legalCombo(suit2, rank2):
+                                card2: UnoCard = UnoCard(suit2, rank2)
+                                st2: int = UnoCard.SUITS.index(suit2)
+                                rnk2: int = UnoCard.RANKS.index(rank2)
+                                with self.subTest(suit1=suit1, rank1=rank1, 
+                                                  suit2=suit2, rank2=rank2):
+                                    self.assertEqual(card1 >= card2, 
+                                                     rnk1 > rnk2 or (rank1 == rank2
+                                                                     and st1 >= st2))
+        # Check defined combinations, to verify that my loops test what I think they test
+        self.assertTrue(self._green4 >= self._red4)
+        self.assertTrue(self._green4 >= self._blue3)
+        self.assertFalse(self._green4 >= self._red5)
+        self.assertTrue(self._green4 >= self._green4_2)
+        # self.assertTrue(UnoCard('blue', '4') <= UnoCard('blue', '4'))
         # Make this test all combinations
 
     def testMakeDeck(self) -> None:

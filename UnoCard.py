@@ -22,7 +22,6 @@ class UnoCard(AbstractCard):
     def makeDeck(cls) -> list[AbstractCard]:
         """Make a deck of UnoCards."""
         deck: list[AbstractCard] = []
-
         for suit in cls.SUITS:
             for rank in cls.RANKS:
                 if cls._legalCombo(suit, rank):
