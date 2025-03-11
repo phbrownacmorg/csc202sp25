@@ -1,20 +1,20 @@
 import unittest
 # import the code you want to test here
-from LList import LList
+from LListTail import LListTail
 
-class TestLList(unittest.TestCase):
+class TestLListTail(unittest.TestCase):
 
     def setUp(self) -> None:
-        self._empty: LList[int] = LList[int]()
+        self._empty: LListTail[int] = LListTail[int]()
     
-        self._1item: LList[str] = LList[str]() # Empty list
+        self._1item: LListTail[str] = LListTail[str]() # Empty list
         self._1item.add('foo')
 
-        self._2items: LList[str] = LList[str]() # Empty list
+        self._2items: LListTail[str] = LListTail[str]() # Empty list
         self._2items.add('foo')
         self._2items.add('bar')
 
-        self._3items: LList[str] = LList[str]() # Empty list
+        self._3items: LListTail[str] = LListTail[str]() # Empty list
         self._3items.add('foo')
         self._3items.add('bar')
         self._3items.add('baz')
@@ -112,6 +112,7 @@ class TestLList(unittest.TestCase):
         for i in range(len(valueList)):
             with self.subTest(i=i, value=valueList[i]):
                 self.assertEqual(self._3items.index(valueList[i]), i)
+
 
 if __name__ == '__main__':
     unittest.main()
