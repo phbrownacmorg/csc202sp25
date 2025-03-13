@@ -91,8 +91,7 @@ class CircList[T]:
            has no index IDX, raise a ValueError.  This method handles negative
            indices, counting from the end as usual."""
         # Pre: -(length of list) <= idx < length of list
-        if self.empty():
-            raise ValueError("Can't pop from an empty list.")
+        assert not self.empty(), "Can't pop from an empty list."
         # Handle negative indices (still checking precondition)
         length: int = len(self)
         if idx < 0:
