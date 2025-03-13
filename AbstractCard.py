@@ -1,5 +1,6 @@
 import abc
 from functools import total_ordering
+from typing import ClassVar
 
 @total_ordering
 class AbstractCard(abc.ABC):
@@ -8,10 +9,10 @@ class AbstractCard(abc.ABC):
     Cards are immutable once created."""
 
     # Set of possible suits (class variable)
-    SUITS: tuple[str,...] = ()
+    SUITS: ClassVar[tuple[str,...]] = ()
 
     # Set of possible ranks (names) of cards (class variable)
-    RANKS: tuple[str,...] = ()
+    RANKS: ClassVar[tuple[str,...]] = ()
 
     @classmethod
     def _legalCombo(cls, suit: str, rank: str) -> bool:
