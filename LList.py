@@ -30,6 +30,12 @@ class LList[T]:
         """Return True iff the current list is empty."""
         return self._data is None and self._next is None
     
+    def data(self) -> T:
+        return self._data
+    
+    def rest(self) -> 'LList[T]':
+        return self._next
+
     def __str__(self) -> str:
         """Return a string representation of the list."""
         result: str = "∅"
