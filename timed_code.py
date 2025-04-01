@@ -62,7 +62,6 @@ def run_test(cases: list[int]) -> list[tuple[str, float, float]]:
 def main(args: list[str]) -> int:
     cases: list[int] = [1, 10, 100, 1000, 10000, 100000]
     results: list[tuple[str, float, float]] = run_test(cases)
-    results.sort()
     for result in results:
         print(result)
     return 0
