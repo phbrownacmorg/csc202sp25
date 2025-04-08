@@ -34,7 +34,7 @@ def tree(branch_len: float, t: turtle.Turtle) -> None:
 def main(args: list[str]) -> int:
     t = turtle.Turtle()
     my_win = turtle.Screen()
-    t.speed('fastest')
+    t.speed(0)
     t.left(90)
     t.up()
     t.backward(100)

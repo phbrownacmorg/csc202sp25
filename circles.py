@@ -36,6 +36,7 @@ def draw_target(radius: float, num_rings: float, t: turtle.Turtle) -> None:
 def main(args: list[str]) -> int:
     t = turtle.Turtle()
     my_win = turtle.Screen()
+    t.speed(0)
 
     radius = 200
 
