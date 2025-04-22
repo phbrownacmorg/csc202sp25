@@ -96,7 +96,8 @@ class Hashtable[KT, VT](abc.MutableMapping[KT, VT]):
     #     return contained
     
     def __iter__(self) -> Iterator[KT]:
-        """Returns an iterator over the keys in the hashtable."""
+        """Returns an iterator over the keys in the hashtable,
+            using a generator function."""
         for bin in self._table:
             if bin.empty():
                 continue
@@ -125,5 +126,5 @@ class Hashtable[KT, VT](abc.MutableMapping[KT, VT]):
 
     def __delitem__(self, key: KT) -> None:
         """Takes a KEY and removes the associated (key, value) pair from the
-            hashtable."""
+            hashtable.  If KEY is not in the hashtable, raise a KeyError."""
         
