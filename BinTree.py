@@ -1,5 +1,5 @@
 from collections.abc import Container
-from typing import Iterator
+from typing import cast, Iterator
 
 class BinTree[T](Container[T]):
     """Class to represent a binary tree.  The root node is always represented
@@ -11,9 +11,8 @@ class BinTree[T](Container[T]):
         """Class invariant."""
         valid: bool = True
         # empty node cannot have children
-        if self._data is None and (self._left is not None or 
-                                    self._right is not None):
-            valid = False
+        if self._data is None:
+            valid = self._left is None and self._right is None
         return valid
 
     def __init__(self, data: T | None = None) -> None:
@@ -27,9 +26,10 @@ class BinTree[T](Container[T]):
     # QUERY METHODS
 
     def empty(self) -> bool:
+        """Return True iff SELF is the empty tree."""
         return self._data is None
     
-    def __contains__(self, value: T) -> bool:
+    def __contains__(self, value: object) -> bool:
         """Return True iff VALUE is contained in the subtree rooted at SELF."""
         contained: bool = False # Handles base case #1; empty tree contains nothing
         if (not self.empty()):
@@ -55,19 +55,19 @@ class BinTree[T](Container[T]):
         """Return self._left, but only if self.hasLeftChild"""
         # Pre:
         assert self.hasLeftChild()
-        return self._left
+        return cast(BinTree[T], self._left)
 
     def right(self) -> 'BinTree[T]':
         """Return self._right, but only if self.hasRightChild"""
         # Pre:
         assert self.hasRightChild()
-        return self._right
+        return cast(BinTree[T], self._right)
 
     def data(self) -> T:
         """Return the data held in this node.  Requires that there be some."""
         # Pre:
         assert not self.empty()
-        return self._data
+        return cast(T, self._data)
     
     def __len__(self) -> int:
         """Return the number of data nodes in the tree."""
@@ -95,6 +95,8 @@ class BinTree[T](Container[T]):
             h = 1 + self.right().height()
         return h
     
+    # TRAVERSALS
+
     def __iter__(self) -> Iterator[T]:
         """Iterate over the tree, using an inorder traversal.  Implemented
             as a generator."""
@@ -108,5 +110,41 @@ class BinTree[T](Container[T]):
                 # Iterate over the right subtree
                 for item in self.right():
                     yield item
-                
 
+    # MUTATOR METHODS
+
+    def setLeft(self, value: T) -> None:
+        """Convenience function to add a leaf node with value VALUE as the
+            left child of SELF.  *NOTE*: subclasses (such as BST[T]) may add
+            more restrictive preconditions to this method, even though that
+            violates strict substitutability."""
+        # Pre:
+        assert (not self.empty()) and (not self.hasLeftChild())
+        self._left = BinTree[T](value)
+        # Post:
+        assert self._invariant() and self.left()._invariant()        
+
+    def setRight(self, value: T) -> None:
+        """Convenience function to add a leaf node with value VALUE as the
+            right child of SELF.  *NOTE*: subclasses (such as BST[T]) may add
+            more restrictive preconditions to this method, even though that
+            violates strict substitutability."""
+        # Pre:
+        assert (not self.empty()) and (not self.hasRightChild())
+        self._right = BinTree[T](value)
+        # Post:
+        assert self._invariant() and self.right()._invariant()
+
+    def removeLeft(self) -> None:
+        """Convenience function to remove SELF's left subtree from the tree.
+            Does nothing if SELF has no left subtree."""
+        self._left = None
+        # Post:
+        assert self._invariant()
+
+    def removeRight(self) -> None:
+        """Convenience function to remove SELF's right subtree from the tree.
+            Does nothing if SELF has no right subtree."""
+        self._right = None
+        # Post:
+        assert self._invariant()
