@@ -1,5 +1,6 @@
 from collections.abc import Container
 from typing import cast, Iterator
+from Q2Stacks import Queue
 
 class BinTree[T](Container[T]):
     """Class to represent a binary tree.  The root node is always represented
@@ -110,6 +111,35 @@ class BinTree[T](Container[T]):
                 # Iterate over the right subtree
                 for item in self.right():
                     yield item
+
+    def preorder(self) -> Iterator[T]:
+        """Iterate over the tree, using a depth-first preorder traversal.
+            Implemented as a generator."""
+        if not self.empty():
+            yield self.data()
+            if self.hasLeftChild():
+                # Iterate over the left subtree
+                for item in self.left().preorder():
+                    yield item
+            if self.hasRightChild():
+                # Iterate over the right subtree
+                for item in self.right().preorder():
+                    yield item
+
+    def bf_preorder(self) -> Iterator[T]:
+        """Iterate over the tree, using a breadth-first preorder traversal.
+            Implemented as a generator."""
+        if not self.empty():
+            q: Queue[BinTree[T]] = Queue[BinTree[T]]()
+            q.add(self)
+            while not q.isEmpty():
+                current: BinTree[T] = q.pop()
+                yield current.data()
+                if current.hasLeftChild():
+                    q.add(current.left())
+                if current.hasRightChild():
+                    q.add(current.right())
+
 
     # MUTATOR METHODS
 

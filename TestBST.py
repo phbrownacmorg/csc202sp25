@@ -1,37 +1,37 @@
 import unittest
-from BinTree import BinTree
+from BST import BST
 # import the code you want to test here
 
-class TestBinTree(unittest.TestCase):
+class TestBST(unittest.TestCase):
 
     def setUp(self) -> None:
-        self._empty = BinTree[str]()
+        self._empty = BST[str]()
 
-        self._1item = BinTree[str]('garbage')
+        self._1item = BST[str]('garbage')
 
-        self._L1tree = BinTree[str]('five')                 #        five
-        self._L1tree.setLeft('garbage')                     #        /
-                                                            #   garbage
+        self._L1tree = BST[str]('garbage')                  #        garbage
+        self._L1tree.add('five')                            #        /
+                                                            #      five
 
-        self._R1tree = BinTree[str]('five')                 #       five
-        self._R1tree.setRight('garbage')                    #          \
+        self._R1tree = BST[str]('five')                     #       five
+        self._R1tree.add('garbage')                         #          \
                                                             #           garbage
 
-        self._bothSidesNow = BinTree[str]('infinity')       #       infinity
-        self._bothSidesNow.setLeft('five')                  #        /    \
-        self._bothSidesNow.left().setRight('garbage')       #     five    left
-        self._bothSidesNow.setRight('left')                 #        \
+        self._bothSidesNow = BST[str]('infinity')           #       infinity
+        self._bothSidesNow.add('five')                      #        /    \
+        self._bothSidesNow.add('garbage')                   #     five    left
+        self._bothSidesNow.add('left')                      #        \
                                                             #       garbage                                                         
 
-        self._numTree = BinTree[int](55)                    #         55
-        self._numTree.setLeft(26)                           #        /  \
-        self._numTree.setRight(66)                          #      26    66
-        self._numTree.left().setLeft(13)                    #     /  \     \
-        self._numTree.left().setRight(38)                   #   13    38    82
-        self._numTree.right().setRight(82)                  #        /     /  \
-        self._numTree.left().right().setLeft(28)            #      28    70    104
-        self._numTree.right().right().setLeft(70)
-        self._numTree.right().right().setRight(104)
+        self._numTree = BST[int](55)                        #         55
+        self._numTree.add(26)                               #        /  \
+        self._numTree.add(66)                               #      26    66
+        self._numTree.add(13)                               #     /  \     \
+        self._numTree.add(38)                               #   13    38    82
+        self._numTree.add(82)                               #        /     /  \
+        self._numTree.add(28)                               #      28    70    104
+        self._numTree.add(70)
+        self._numTree.add(104)
 
     # Every method that starts with the string "test"
     # will be executed as a unit test
@@ -62,6 +62,31 @@ class TestBinTree(unittest.TestCase):
     def testContainsRChild(self) -> None:
         self.assertTrue('garbage' in self._R1tree)
 
+    def testFindEmpty(self) -> None:
+        with self.assertRaises(ValueError):
+            self._empty.find('garbage')
+
+    def testFindWrongData(self) -> None:
+        with self.assertRaises(ValueError):
+            self._1item.find('trash')
+
+    def testFindRoot(self) -> None:
+        self.assertEqual(self._1item.find('garbage'), self._1item)
+
+    def testFindWrongDataL(self) -> None:
+        with self.assertRaises(ValueError):
+            self._L1tree.find('four')
+
+    def testFindLChild(self) -> None:
+        self.assertEqual(self._L1tree.find('five'), self._L1tree.left())
+
+    def testFindWrongDataR(self) -> None:
+        with self.assertRaises(ValueError):
+            self._R1tree.find('trash')
+
+    def testFindRChild(self) -> None:
+        self.assertEqual(self._R1tree.find('garbage'), self._R1tree.right())
+
     def testLen(self) -> None:
         self.assertEqual(len(self._empty), 0)
         self.assertEqual(len(self._1item), 1)
@@ -79,7 +104,7 @@ class TestBinTree(unittest.TestCase):
     def testIter(self) -> None:
         self.assertEqual(list(iter(self._empty)), [])
         self.assertEqual(list(iter(self._1item)), ['garbage'])
-        self.assertEqual(list(iter(self._L1tree)), ['garbage', 'five'])
+        self.assertEqual(list(iter(self._L1tree)), ['five', 'garbage'])
         self.assertEqual(list(iter(self._R1tree)), ['five', 'garbage'])
         self.assertEqual(list(iter(self._bothSidesNow)), ['five', 'garbage', 'infinity', 'left'])
         self.assertEqual(list(iter(self._numTree)), [13, 26, 28, 38, 55, 66, 70, 82, 104])
@@ -87,7 +112,7 @@ class TestBinTree(unittest.TestCase):
     def testPreorder(self) -> None:
         self.assertEqual(list(self._empty.preorder()), [])
         self.assertEqual(list(self._1item.preorder()), ['garbage'])
-        self.assertEqual(list(self._L1tree.preorder()), ['five', 'garbage'])
+        self.assertEqual(list(self._L1tree.preorder()), ['garbage', 'five'])
         self.assertEqual(list(self._R1tree.preorder()), ['five', 'garbage'])
         self.assertEqual(list(self._bothSidesNow.preorder()), ['infinity', 'five', 'garbage', 'left'])
         self.assertEqual(list(self._numTree.preorder()), [55, 26, 13, 38, 28, 66, 82, 70, 104])
@@ -95,16 +120,48 @@ class TestBinTree(unittest.TestCase):
     def testBfPreorder(self) -> None:
         self.assertEqual(list(self._empty.bf_preorder()), [])
         self.assertEqual(list(self._1item.bf_preorder()), ['garbage'])
-        self.assertEqual(list(self._L1tree.bf_preorder()), ['five', 'garbage'])
+        self.assertEqual(list(self._L1tree.bf_preorder()), ['garbage', 'five'])
         self.assertEqual(list(self._R1tree.bf_preorder()), ['five', 'garbage'])
         self.assertEqual(list(self._bothSidesNow.bf_preorder()), ['infinity', 'five', 'left', 'garbage'])
         self.assertEqual(list(self._numTree.bf_preorder()), [55, 26, 66, 13, 38, 82, 28, 70, 104])
 
+    def testSetLeftEmptyException(self) -> None:
+        with self.assertRaises(AssertionError):
+            self._empty.setLeft('garbage')
+
+    def testSetLeftSubtreeException(self) -> None:
+        with self.assertRaises(AssertionError):
+            self._L1tree.setLeft('echo')
+
+    def testSetLeftValueException(self) -> None:
+        with self.assertRaises(ValueError):
+            self._1item.setLeft('trash') # Should be added on right, not left
+
+    def testSetLeftDuplicateException(self) -> None:
+        with self.assertRaises(ValueError):
+            self._1item.setLeft('garbage') # Already in that tree
+
+    def testSetRightEmptyException(self) -> None:
+        with self.assertRaises(AssertionError):
+            self._empty.setRight('garbage')
+
+    def testSetRightSubtreeException(self) -> None:
+        with self.assertRaises(AssertionError):
+            self._R1tree.setRight('whiskey')
+
+    def testSetRightValueException(self) -> None:
+        with self.assertRaises(ValueError):
+            self._1item.setRight('foxtrot') # Should be added on left, not right
+
+    def testSetRightDuplicateException(self) -> None:
+        with self.assertRaises(ValueError):
+            self._1item.setRight('garbage') # Already in that tree
+
     def testRemoveLeft(self) -> None:
         self._empty.removeLeft()            # Nothing happens
         self.assertEqual(list(iter(self._empty)), [])
-        self._L1tree.removeLeft()           # Remove the 'garbage'
-        self.assertEqual(list(iter(self._L1tree)), ['five'])
+        self._L1tree.removeLeft()           # Remove the 'five'
+        self.assertEqual(list(iter(self._L1tree)), ['garbage'])
         self._R1tree.removeLeft()           # Nothing happens
         self.assertEqual(list(iter(self._R1tree)), ['five', 'garbage'])
         self._bothSidesNow.removeLeft()     # Removes the 'five' subtree
@@ -116,7 +173,7 @@ class TestBinTree(unittest.TestCase):
         self._empty.removeRight()            # Nothing happens
         self.assertEqual(list(iter(self._empty)), [])
         self._L1tree.removeRight()           # Nothing happens
-        self.assertEqual(list(iter(self._L1tree)), ['garbage', 'five'])
+        self.assertEqual(list(iter(self._L1tree)), ['five', 'garbage'])
         self._R1tree.removeRight()           # Remove the 'garbage'
         self.assertEqual(list(iter(self._R1tree)), ['five'])
         self._bothSidesNow.removeRight()     # Removes 'left'
