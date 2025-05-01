@@ -63,13 +63,13 @@ class BST[T](BinTree[T]):
         assert self.hasRightChild()
         return cast(BST[T], self.right()).largestValue()
     
-    def generalSuccessorValue(self) -> T | None:
-        """Returns the successor value for SELF in the tree, or None if SELF
+    def generalSuccessor(self) -> 'BST[T] | None':
+        """Returns the successor node for SELF in the tree, or None if SELF
             is the largest node in the tree."""
         # Pre:
         assert hasattr(self, 'parent') # Can't be done without parent links
-        result: T | None = None
-        return result  # Stub!
+        result: BST[T] | None = None
+        return result  # Stub!  FIX THIS.
 
     # MUTATOR METHODS
     
@@ -122,5 +122,5 @@ class BST[T](BinTree[T]):
     def remove(self, value: T) -> 'BST[T]':
         """Remove the node containing VALUE from the tree, and return the
             resulting tree.  If VALUE is not in the tree, raise a ValueError."""
-        return BST[T](cast(T, 'bogus'))
+        return BST[T](cast(T, 'bogus'))  # yes, it's a stub.
 

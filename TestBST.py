@@ -165,7 +165,8 @@ class TestBST(unittest.TestCase):
     #     values: list[int] = list(iter(self._numTree))
     #     for i in range(1,len(values)):
     #         with self.subTest(i=i, val=values[i]):
-    #             self.assertEqual(self._numTree.find(values[i-1]).generalSuccessorValue(), values[i])
+    #             self.assertEqual(self._numTree.find(values[i-1]).generalSuccessor(), 
+    #                               self._numTree.find(values[i]))
 
     def testSetLeftSubtreeException(self) -> None:
         with self.assertRaises(AssertionError):
