@@ -8,11 +8,20 @@ class BinTree[T](Collection[T]):
     
     def _invariant(self) -> bool:
         """Class invariant."""
-        return True
+        valid: bool = True
+        # Verify consistency of parent and child nodes
+        if self._parent is not None:
+            valid = ((self._parent._left == self) or (self._parent._right == self))
+        if valid and self._left is not None:
+            valid = (self._left._parent == self)
+        if valid and self._right is not None:
+            valid = (self._right._parent == self)
+        return valid
 
     def __init__(self, data: T) -> None:
         """Construct a single-node tree with data DATA."""
         self._data: T = data
+        self._parent: BinTree[T] | None = None
         self._left: BinTree[T] | None = None
         self._right: BinTree[T] | None = None
         # Post:
@@ -26,7 +35,7 @@ class BinTree[T](Collection[T]):
 
     def isRoot(self) -> bool:
         """Return True iff SELF is the root (that is, has no parent)."""
-        return False # STUB
+        return self._parent is None
     
     def hasLeftChild(self) -> bool:
         """Return True iff SELF has a non-empty left child."""
@@ -40,7 +49,7 @@ class BinTree[T](Collection[T]):
         """Return SELF's parent, but only if SELF is not the root."""
         # Pre:
         assert not self.isRoot()
-        return self # STUB
+        return self._parent
 
     def left(self) -> 'BinTree[T]':
         """Return self._left, but only if self.hasLeftChild()"""
@@ -138,6 +147,7 @@ class BinTree[T](Collection[T]):
         # Pre:
         assert not self.hasLeftChild()
         self._left = BinTree[T](value)
+        self._left._parent = self
         # Post:
         assert self._invariant() and self.left()._invariant()        
 
@@ -149,12 +159,15 @@ class BinTree[T](Collection[T]):
         # Pre:
         assert not self.hasRightChild()
         self._right = BinTree[T](value)
+        self._right._parent = self
         # Post:
         assert self._invariant() and self.right()._invariant()
 
     def removeLeft(self) -> None:
         """Convenience function to remove SELF's left subtree from the tree.
             Does nothing if SELF has no left subtree."""
+        if self.hasLeftChild():
+            self._left._parent = None
         self._left = None
         # Post:
         assert self._invariant()
@@ -162,6 +175,8 @@ class BinTree[T](Collection[T]):
     def removeRight(self) -> None:
         """Convenience function to remove SELF's right subtree from the tree.
             Does nothing if SELF has no right subtree."""
+        if self.hasRightChild():
+            self._right._parent = None
         self._right = None
         # Post:
         assert self._invariant()

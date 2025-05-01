@@ -35,30 +35,30 @@ class TestBinTree(unittest.TestCase):
     # will be executed as a unit test
 
     # Parent stuff
-    # def testIsRootTrue(self) -> None:
-    #     self.assertTrue(self._1item.isRoot())
-    #     self.assertTrue(self._L1tree.isRoot())
-    #     self.assertTrue(self._R1tree.isRoot())
-    #     self.assertTrue(self._bothSidesNow.isRoot())
-    #     self.assertTrue(self._numTree.isRoot())
+    def testIsRootTrue(self) -> None:
+        self.assertTrue(self._1item.isRoot())
+        self.assertTrue(self._L1tree.isRoot())
+        self.assertTrue(self._R1tree.isRoot())
+        self.assertTrue(self._bothSidesNow.isRoot())
+        self.assertTrue(self._numTree.isRoot())
 
-    # def testIsRootFalse(self) -> None:
-    #     self.assertFalse(self._L1tree.left().isRoot())
-    #     self.assertFalse(self._R1tree.right().isRoot())
-    #     self.assertFalse(self._bothSidesNow.left().isRoot())
-    #     self.assertFalse(self._bothSidesNow.right().isRoot())
-    #     self.assertFalse(self._numTree.left().isRoot())
-    #     self.assertFalse(self._numTree.right().isRoot())
+    def testIsRootFalse(self) -> None:
+        self.assertFalse(self._L1tree.left().isRoot())
+        self.assertFalse(self._R1tree.right().isRoot())
+        self.assertFalse(self._bothSidesNow.left().isRoot())
+        self.assertFalse(self._bothSidesNow.right().isRoot())
+        self.assertFalse(self._numTree.left().isRoot())
+        self.assertFalse(self._numTree.right().isRoot())
 
-    # def testParentException(self) -> None:
-    #     with self.assertRaises(AssertionError):
-    #         self._numTree.parent()
+    def testParentException(self) -> None:
+        with self.assertRaises(AssertionError):
+            self._numTree.parent()
 
-    # def testActualParent(self) -> None:
-    #     self.assertEqual(self._numTree.left().parent(), self._numTree.right().parent())
-    #     self.assertEqual(self._numTree.right().parent().data(), 55)
-    #     self.assertEqual(self._numTree.right().right().parent().data(), 66)
-    #     self.assertEqual(self._numTree.right().right().right().parent().data(), 82)
+    def testActualParent(self) -> None:
+        self.assertEqual(self._numTree.left().parent(), self._numTree.right().parent())
+        self.assertEqual(self._numTree.right().parent().data(), 55)
+        self.assertEqual(self._numTree.right().right().parent().data(), 66)
+        self.assertEqual(self._numTree.right().right().right().parent().data(), 82)
 
     def testContainsWrongData(self) -> None:
         self.assertFalse('trash' in self._1item)

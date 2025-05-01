@@ -37,41 +37,41 @@ class TestBST(unittest.TestCase):
 
     # smallestValue, largestValue
 
-    # def testSmallestOne(self) -> None:
-    #     self.assertEqual(self._1item.smallestValue(), 'garbage')
+    def testSmallestOne(self) -> None:
+        self.assertEqual(self._1item.smallestValue(), 'garbage')
 
-    # def testSmallestOnlyLeftChild(self) -> None:
-    #     self.assertEqual(self._L1tree.smallestValue(), 'five')
+    def testSmallestOnlyLeftChild(self) -> None:
+        self.assertEqual(self._L1tree.smallestValue(), 'five')
 
-    # def testSmallestOnlyRightChild(self) -> None:
-    #     self.assertEqual(cast(BST[int], self._numTree.right()).smallestValue(), 66)
+    def testSmallestOnlyRightChild(self) -> None:
+        self.assertEqual(cast(BST[int], self._numTree.right()).smallestValue(), 66)
 
-    # def testSmallestTwoChildren(self) -> None:
-    #     self.assertEqual(self._numTree.smallestValue(), 13)
+    def testSmallestTwoChildren(self) -> None:
+        self.assertEqual(self._numTree.smallestValue(), 13)
 
-    # def testSmallestRightHook(self) -> None:
-    #     self.assertEqual(self._bothSidesNow.smallestValue(), 'five')
+    def testSmallestRightHook(self) -> None:
+        self.assertEqual(self._bothSidesNow.smallestValue(), 'five')
 
-    # def testSmallestLeftHook(self) -> None:
-    #     self.assertEqual(cast(BST[int], self._numTree.right().right()).smallestValue(), 70)
+    def testSmallestLeftHook(self) -> None:
+        self.assertEqual(cast(BST[int], self._numTree.right().right()).smallestValue(), 70)
 
-    # def testLargestOne(self) -> None:
-    #     self.assertEqual(self._1item.largestValue(), 'garbage')
+    def testLargestOne(self) -> None:
+        self.assertEqual(self._1item.largestValue(), 'garbage')
 
-    # def testLargestOnlyLeftChild(self) -> None:
-    #     self.assertEqual(self._L1tree.largestValue(), 'garbage')
+    def testLargestOnlyLeftChild(self) -> None:
+        self.assertEqual(self._L1tree.largestValue(), 'garbage')
 
-    # def testLargestOnlyRightChild(self) -> None:
-    #     self.assertEqual(cast(BST[int], self._numTree.right()).largestValue(), 104)
+    def testLargestOnlyRightChild(self) -> None:
+        self.assertEqual(cast(BST[int], self._numTree.right()).largestValue(), 104)
 
-    # def testLargestTwoChildren(self) -> None:
-    #     self.assertEqual(self._numTree.largestValue(), 104)
+    def testLargestTwoChildren(self) -> None:
+        self.assertEqual(self._numTree.largestValue(), 104)
 
-    # def testLargestRightHook(self) -> None:
-    #     self.assertEqual(cast(BST[str], self._bothSidesNow.left()).largestValue(), 'garbage')
+    def testLargestRightHook(self) -> None:
+        self.assertEqual(cast(BST[str], self._bothSidesNow.left()).largestValue(), 'garbage')
 
-    # def testLargestLeftHook(self) -> None:
-    #     self.assertEqual(cast(BST[int], self._numTree.left()).largestValue(), 38)
+    def testLargestLeftHook(self) -> None:
+        self.assertEqual(cast(BST[int], self._numTree.left()).largestValue(), 38)
 
     def testContainsWrongData(self) -> None:
         self.assertFalse('trash' in self._1item)
@@ -145,19 +145,26 @@ class TestBST(unittest.TestCase):
         self.assertEqual(list(self._bothSidesNow.bf_preorder()), ['infinity', 'five', 'left', 'garbage'])
         self.assertEqual(list(self._numTree.bf_preorder()), [55, 26, 66, 13, 38, 82, 28, 70, 104])
 
-    # Successor with a right chiuld
+    # def testInorder(self) -> None:
+    #     self.assertEqual(list(self._1item.inorder()), ['garbage'])
+    #     self.assertEqual(list(self._L1tree.inorder()), ['five', 'garbage'])
+    #     self.assertEqual(list(self._R1tree.inorder()), ['five', 'garbage'])
+    #     self.assertEqual(list(self._bothSidesNow.inorder()), ['five', 'garbage', 'infinity', 'left'])
+    #     self.assertEqual(list(self._numTree.inorder()), [13, 26, 28, 38, 55, 66, 70, 82, 104])
 
-    # def testSuccessor55(self) -> None:
-    #     self.assertEqual(self._numTree.successorValueRChild(), 66)
+    # Successor with a right child
 
-    # def testSuccessor26(self) -> None:
-    #     self.assertEqual(cast(BST[int], self._numTree.left()).successorValueRChild(), 28)
+    def testSuccessor55(self) -> None:
+        self.assertEqual(self._numTree.successorValueRChild(), 66)
 
-    # def testSuccessor66(self) -> None:
-    #     self.assertEqual(cast(BST[int], self._numTree.right()).successorValueRChild(), 70)
+    def testSuccessor26(self) -> None:
+        self.assertEqual(cast(BST[int], self._numTree.left()).successorValueRChild(), 28)
 
-    # def testSuccessor82(self) -> None:
-    #     self.assertEqual(cast(BST[int], self._numTree.right().right()).successorValueRChild(), 104)
+    def testSuccessor66(self) -> None:
+        self.assertEqual(cast(BST[int], self._numTree.right()).successorValueRChild(), 70)
+
+    def testSuccessor82(self) -> None:
+        self.assertEqual(cast(BST[int], self._numTree.right().right()).successorValueRChild(), 104)
 
     # General successor
 
@@ -214,42 +221,46 @@ class TestBST(unittest.TestCase):
 
     # Remove by value
 
-    # def testRemoveLeaf(self) -> None:
-    #     self._bothSidesNow.remove('garbage')
-    #     self.assertEqual(list(iter(self._bothSidesNow)), ['five', 'infinity', 'left'])
-    #     # Verify structure
-    #     self.assertEqual(self._bothSidesNow.data(), 'infinity')
-    #     self.assertEqual(self._bothSidesNow.left().data(), 'five')
-    #     self.assertEqual(self._bothSidesNow.right().data(), 'left')
+    def testRemoveLeaf(self) -> None:
+        self._bothSidesNow = self._bothSidesNow.remove('garbage')
+        self.assertEqual(list(iter(self._bothSidesNow)), ['five', 'infinity', 'left'])
+        # Verify structure
+        self.assertEqual(self._bothSidesNow.data(), 'infinity')
+        self.assertEqual(self._bothSidesNow.left().data(), 'five')
+        self.assertEqual(self._bothSidesNow.right().data(), 'left')
+        self.assertFalse(self._bothSidesNow.left().hasRightChild())
 
-    # def testRemoveRoot(self) -> None:
-    #     self._L1tree.remove('garbage')
-    #     self.assertEqual(self._L1tree.data(), 'five')
-    #     self.assertFalse(self._L1tree.hasLeftChild())
-    #     self.assertFalse(self._L1tree.hasRightChild())
+    def testRemoveRoot(self) -> None:
+        self._L1tree = self._L1tree.remove('garbage')
+        self.assertEqual(self._L1tree.data(), 'five')
+        self.assertFalse(self._L1tree.hasLeftChild())
+        self.assertFalse(self._L1tree.hasRightChild())
 
-    # def testRemove1ChildLeft(self) -> None:
-    #     self._numTree.remove(38)
-    #     self.assertEqual(list(iter(self._numTree)), [13, 26, 28, 55, 66, 70, 82, 104])
-    #     # Verify structure
-    #     self.assertEqual(self._numTree.left().data(), 26)
-    #     self.assertEqual(self._numTree.left().right().data(), 28)
+    def testRemove1ChildLeft(self) -> None:
+        self._numtree = self._numTree.remove(38)
+        self.assertEqual(list(iter(self._numTree)), [13, 26, 28, 55, 66, 70, 82, 104])
+        # Verify structure
+        self.assertEqual(self._numTree.left().data(), 26)
+        self.assertEqual(self._numTree.left().right().data(), 28)
+        self.assertFalse(self._numTree.left().right().hasLeftChild())
+        self.assertFalse(self._numTree.left().right().hasRightChild())
 
-    # def testRemove1ChildRight(self) -> None:
-    #     self._numTree.remove(66)
-    #     self.assertEqual(list(iter(self._numTree)), [13, 26, 28, 38, 55, 70, 82, 104])
-    #     # Verify structure
-    #     self.assertEqual(self._numTree.right().data(), 82)
-    #     self.assertEqual(self._numTree.right().left().data(), 70)
-    #     self.assertEqual(self._numTree.right().right().data(), 104)
+    def testRemove1ChildRight(self) -> None:
+        self._numTree = self._numTree.remove(66)
+        self.assertEqual(list(iter(self._numTree)), [13, 26, 28, 38, 55, 70, 82, 104])
+        # Verify structure
+        self.assertEqual(self._numTree.right().data(), 82)
+        self.assertEqual(self._numTree.right().left().data(), 70)
+        self.assertEqual(self._numTree.right().right().data(), 104)
 
-    # def testRemove2Children(self) -> None:
-    #     self._numTree.remove(26)
-    #     self.assertEqual(list(iter(self._numTree)), [13, 28, 38, 55, 66, 70, 82, 104])
-    #     # Verify structure
-    #     self.assertEqual(self._numTree.left().data(), 28)
-    #     self.assertEqual(self._numTree.left().left().data(), 13)
-    #     self.assertEqual(self._numTree.left().right().data(), 38)
+    def testRemove2Children(self) -> None:
+        self._numTree = self._numTree.remove(26)
+        self.assertEqual(list(iter(self._numTree)), [13, 28, 38, 55, 66, 70, 82, 104])
+        # Verify structure
+        self.assertEqual(self._numTree.left().data(), 28)
+        self.assertEqual(self._numTree.left().left().data(), 13)
+        self.assertEqual(self._numTree.left().right().data(), 38)
+        self.assertFalse(self._numTree.left().right().hasLeftChild())
 
 
 

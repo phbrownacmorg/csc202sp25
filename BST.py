@@ -12,11 +12,11 @@ class BST[T](BinTree[T]):
         valid: bool = super()._invariant() # Superclass invariant still holds
         if self.hasLeftChild():
             valid = valid and isinstance(self._left, BST) # Just BinTree doesn't cut it
-            valid = valid and self._data > max(iter(self._left)) # type: ignore
+            valid = valid and self._data > cast(BST[T], self._left).largestValue()
             valid = valid and self.left()._invariant()
         if self.hasRightChild():
             valid = valid and isinstance(self._right, BST) # Just BinTree doesn't cut it
-            valid = valid and self._data < min(iter(self._right)) # type: ignore
+            valid = valid and self._data < cast(BST[T], self._right).smallestValue()
             valid = valid and self.right()._invariant()
         return valid
     
@@ -24,11 +24,17 @@ class BST[T](BinTree[T]):
 
     def smallestValue(self) -> T:
         """Find and return the smallest value in the subtree rooted at SELF."""
-        return cast(T, 1) # Bogosity incarnate
+        result: T = self.data() # Handles the case where there is no left subtree
+        if self.hasLeftChild():
+            result = cast(BST[T], self.left()).smallestValue()
+        return result
 
     def largestValue(self) -> T:
         """Find and return the largest value in the subtree rooted at SELF."""
-        return cast(T, 1) # Bogosity incarnate
+        result: T = self.data() # Handles the case where there is no right subtree
+        if self.hasRightChild():
+            result = cast(BST[T], self.right()).largestValue()
+        return result
 
     def find(self, value: T) -> 'BST[T]':
         """Find and return the node containing VALUE.  If VALUE is not in the
@@ -61,7 +67,7 @@ class BST[T](BinTree[T]):
         """Returns the successor value for a node with a right child in a BST."""
         # Pre:
         assert self.hasRightChild()
-        return cast(BST[T], self.right()).largestValue()
+        return cast(BST[T], self.right()).smallestValue()
     
     def generalSuccessor(self) -> 'BST[T] | None':
         """Returns the successor node for SELF in the tree, or None if SELF
@@ -84,6 +90,7 @@ class BST[T](BinTree[T]):
             raise ValueError("{0} can't be the left child of a node with {1}".format(value, self.data()))
         else:
             self._left = BST[T](value)
+            self._left._parent = self
         # Post:
         assert self._invariant() # Implies self.left()._invariant()
 
@@ -98,6 +105,7 @@ class BST[T](BinTree[T]):
             raise ValueError("{0} can't be the right child of a node with {1}".format(value, self.data()))
         else:
             self._right = BST[T](value)
+            self._right._parent = self
         # Post:
         assert self._invariant() # Implies self.right()._invariant()
 
@@ -119,8 +127,47 @@ class BST[T](BinTree[T]):
             else:
                 self.setRight(value)
 
-    def remove(self, value: T) -> 'BST[T]':
+    def remove(self, value: T) -> 'BST[T] | None':
         """Remove the node containing VALUE from the tree, and return the
             resulting tree.  If VALUE is not in the tree, raise a ValueError."""
-        return BST[T](cast(T, 'bogus'))  # yes, it's a stub.
+        # Pre:
+        assert hasattr(value, '__lt__') and hasattr(value, '__gt__')
+        result: BST[T] | None = self
+        if value < self.data():
+            # Value should be in left subtree
+            if not self.hasLeftChild():
+                raise ValueError("{0} cannot be deleted, as it isn't in the tree.".format(value))
+            self._left = cast(BST[T], self.left()).remove(value)
+        elif value > self.data():
+            # Value should be in right subtree
+            if not self.hasRightChild():
+                raise ValueError("{0} cannot be deleted, as it isn't in the tree.".format(value))
+            self._right = cast(BST[T], self.right()).remove(value)
+        else: # value == self.data(), so this is the node we're looking for
+            # Leaf: just delete it
+            if not self.hasRightChild() and not self.hasLeftChild():
+                self._parent = None
+                result = None
+            # Only left child: link around self
+            elif self.hasLeftChild() and not self.hasRightChild():
+                result = cast(BST[T], self.left())
+                self.left()._parent = self._parent
+                self._parent = None
+                self._left = None
+            # Only right child: link around self
+            elif self.hasRightChild() and not self.hasLeftChild():
+                result = cast(BST[T], self.right())
+                self.right()._parent = self._parent
+                self._parent = None
+                self._right = None
+            # Two children
+            else:
+                # Find the successor value and copy it into self
+                self._data = self.successorValueRChild()
+                # Then remove it from the right subtree 
+                # (successor node cannot have a left child)
+                self._right = cast(BST[T], self.right()).remove(self.data())
+        
+
+        return result
 
