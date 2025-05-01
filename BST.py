@@ -22,6 +22,14 @@ class BST[T](BinTree[T]):
     
     # QUERY METHODS
 
+    def smallestValue(self) -> T:
+        """Find and return the smallest value in the subtree rooted at SELF."""
+        return cast(T, 1) # Bogosity incarnate
+
+    def largestValue(self) -> T:
+        """Find and return the largest value in the subtree rooted at SELF."""
+        return cast(T, 1) # Bogosity incarnate
+
     def find(self, value: T) -> 'BST[T]':
         """Find and return the node containing VALUE.  If VALUE is not in the
             tree, raise a ValueError."""
@@ -49,6 +57,20 @@ class BST[T](BinTree[T]):
             pass # present is already False
         return present
     
+    def successorValueRChild(self) -> T:
+        """Returns the successor value for a node with a right child in a BST."""
+        # Pre:
+        assert self.hasRightChild()
+        return cast(BST[T], self.right()).largestValue()
+    
+    def generalSuccessorValue(self) -> T | None:
+        """Returns the successor value for SELF in the tree, or None if SELF
+            is the largest node in the tree."""
+        # Pre:
+        assert hasattr(self, 'parent') # Can't be done without parent links
+        result: T | None = None
+        return result  # Stub!
+
     # MUTATOR METHODS
     
     def setLeft(self, value: T) -> None:
@@ -96,4 +118,9 @@ class BST[T](BinTree[T]):
                 cast(BST[T], self.right()).add(value)
             else:
                 self.setRight(value)
+
+    def remove(self, value: T) -> 'BST[T]':
+        """Remove the node containing VALUE from the tree, and return the
+            resulting tree.  If VALUE is not in the tree, raise a ValueError."""
+        return BST[T](cast(T, 'bogus'))
 

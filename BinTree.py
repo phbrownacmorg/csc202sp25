@@ -24,6 +24,10 @@ class BinTree[T](Collection[T]):
         """Return the data held in this node."""
         return self._data
 
+    def isRoot(self) -> bool:
+        """Return True iff SELF is the root (that is, has no parent)."""
+        return False # STUB
+    
     def hasLeftChild(self) -> bool:
         """Return True iff SELF has a non-empty left child."""
         return self._left is not None
@@ -32,6 +36,12 @@ class BinTree[T](Collection[T]):
         """Return True iff SELF has a non-empty right child."""
         return self._right is not None
     
+    def parent(self) -> 'BinTree[T]':
+        """Return SELF's parent, but only if SELF is not the root."""
+        # Pre:
+        assert not self.isRoot()
+        return self # STUB
+
     def left(self) -> 'BinTree[T]':
         """Return self._left, but only if self.hasLeftChild()"""
         # Pre:
