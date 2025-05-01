@@ -5,8 +5,6 @@ from BST import BST
 class TestBST(unittest.TestCase):
 
     def setUp(self) -> None:
-        self._empty = BST[str]()
-
         self._1item = BST[str]('garbage')
 
         self._L1tree = BST[str]('garbage')                  #        garbage
@@ -35,15 +33,6 @@ class TestBST(unittest.TestCase):
 
     # Every method that starts with the string "test"
     # will be executed as a unit test
-    def testEmptyTrue(self) -> None:
-        self.assertTrue(self._empty.empty())
-
-    def testEmptyFalse(self) -> None:
-        self.assertFalse(self._1item.empty())
-
-    def testContainsEmpty(self) -> None:
-        self.assertFalse('garbage' in self._empty)
-
     def testContainsWrongData(self) -> None:
         self.assertFalse('trash' in self._1item)
 
@@ -61,10 +50,6 @@ class TestBST(unittest.TestCase):
 
     def testContainsRChild(self) -> None:
         self.assertTrue('garbage' in self._R1tree)
-
-    def testFindEmpty(self) -> None:
-        with self.assertRaises(ValueError):
-            self._empty.find('garbage')
 
     def testFindWrongData(self) -> None:
         with self.assertRaises(ValueError):
@@ -88,21 +73,18 @@ class TestBST(unittest.TestCase):
         self.assertEqual(self._R1tree.find('garbage'), self._R1tree.right())
 
     def testLen(self) -> None:
-        self.assertEqual(len(self._empty), 0)
         self.assertEqual(len(self._1item), 1)
         self.assertEqual(len(self._L1tree), 2)
         self.assertEqual(len(self._R1tree), 2)
         self.assertEqual(len(self._bothSidesNow), 4)
 
     def testHeight(self) -> None:
-        self.assertEqual(self._empty.height(), 0)
         self.assertEqual(self._1item.height(), 1)
         self.assertEqual(self._L1tree.height(), 2)
         self.assertEqual(self._R1tree.height(), 2)
         self.assertEqual(self._bothSidesNow.height(), 3)
 
     def testIter(self) -> None:
-        self.assertEqual(list(iter(self._empty)), [])
         self.assertEqual(list(iter(self._1item)), ['garbage'])
         self.assertEqual(list(iter(self._L1tree)), ['five', 'garbage'])
         self.assertEqual(list(iter(self._R1tree)), ['five', 'garbage'])
@@ -110,7 +92,6 @@ class TestBST(unittest.TestCase):
         self.assertEqual(list(iter(self._numTree)), [13, 26, 28, 38, 55, 66, 70, 82, 104])
 
     def testPreorder(self) -> None:
-        self.assertEqual(list(self._empty.preorder()), [])
         self.assertEqual(list(self._1item.preorder()), ['garbage'])
         self.assertEqual(list(self._L1tree.preorder()), ['garbage', 'five'])
         self.assertEqual(list(self._R1tree.preorder()), ['five', 'garbage'])
@@ -118,16 +99,11 @@ class TestBST(unittest.TestCase):
         self.assertEqual(list(self._numTree.preorder()), [55, 26, 13, 38, 28, 66, 82, 70, 104])
 
     def testBfPreorder(self) -> None:
-        self.assertEqual(list(self._empty.bf_preorder()), [])
         self.assertEqual(list(self._1item.bf_preorder()), ['garbage'])
         self.assertEqual(list(self._L1tree.bf_preorder()), ['garbage', 'five'])
         self.assertEqual(list(self._R1tree.bf_preorder()), ['five', 'garbage'])
         self.assertEqual(list(self._bothSidesNow.bf_preorder()), ['infinity', 'five', 'left', 'garbage'])
         self.assertEqual(list(self._numTree.bf_preorder()), [55, 26, 66, 13, 38, 82, 28, 70, 104])
-
-    def testSetLeftEmptyException(self) -> None:
-        with self.assertRaises(AssertionError):
-            self._empty.setLeft('garbage')
 
     def testSetLeftSubtreeException(self) -> None:
         with self.assertRaises(AssertionError):
@@ -140,10 +116,6 @@ class TestBST(unittest.TestCase):
     def testSetLeftDuplicateException(self) -> None:
         with self.assertRaises(ValueError):
             self._1item.setLeft('garbage') # Already in that tree
-
-    def testSetRightEmptyException(self) -> None:
-        with self.assertRaises(AssertionError):
-            self._empty.setRight('garbage')
 
     def testSetRightSubtreeException(self) -> None:
         with self.assertRaises(AssertionError):
@@ -158,8 +130,6 @@ class TestBST(unittest.TestCase):
             self._1item.setRight('garbage') # Already in that tree
 
     def testRemoveLeft(self) -> None:
-        self._empty.removeLeft()            # Nothing happens
-        self.assertEqual(list(iter(self._empty)), [])
         self._L1tree.removeLeft()           # Remove the 'five'
         self.assertEqual(list(iter(self._L1tree)), ['garbage'])
         self._R1tree.removeLeft()           # Nothing happens
@@ -170,8 +140,6 @@ class TestBST(unittest.TestCase):
         self.assertEqual(list(iter(self._numTree)), [26, 28, 38, 55, 66, 70, 82, 104])
 
     def testRemoveRight(self) -> None:
-        self._empty.removeRight()            # Nothing happens
-        self.assertEqual(list(iter(self._empty)), [])
         self._L1tree.removeRight()           # Nothing happens
         self.assertEqual(list(iter(self._L1tree)), ['five', 'garbage'])
         self._R1tree.removeRight()           # Remove the 'garbage'

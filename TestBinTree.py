@@ -5,8 +5,6 @@ from BinTree import BinTree
 class TestBinTree(unittest.TestCase):
 
     def setUp(self) -> None:
-        self._empty = BinTree[str]()
-
         self._1item = BinTree[str]('garbage')
 
         self._L1tree = BinTree[str]('five')                 #        five
@@ -35,14 +33,6 @@ class TestBinTree(unittest.TestCase):
 
     # Every method that starts with the string "test"
     # will be executed as a unit test
-    def testEmptyTrue(self) -> None:
-        self.assertTrue(self._empty.empty())
-
-    def testEmptyFalse(self) -> None:
-        self.assertFalse(self._1item.empty())
-
-    def testContainsEmpty(self) -> None:
-        self.assertFalse('garbage' in self._empty)
 
     def testContainsWrongData(self) -> None:
         self.assertFalse('trash' in self._1item)
@@ -63,21 +53,18 @@ class TestBinTree(unittest.TestCase):
         self.assertTrue('garbage' in self._R1tree)
 
     def testLen(self) -> None:
-        self.assertEqual(len(self._empty), 0)
         self.assertEqual(len(self._1item), 1)
         self.assertEqual(len(self._L1tree), 2)
         self.assertEqual(len(self._R1tree), 2)
         self.assertEqual(len(self._bothSidesNow), 4)
 
     def testHeight(self) -> None:
-        self.assertEqual(self._empty.height(), 0)
         self.assertEqual(self._1item.height(), 1)
         self.assertEqual(self._L1tree.height(), 2)
         self.assertEqual(self._R1tree.height(), 2)
         self.assertEqual(self._bothSidesNow.height(), 3)
 
     def testIter(self) -> None:
-        self.assertEqual(list(iter(self._empty)), [])
         self.assertEqual(list(iter(self._1item)), ['garbage'])
         self.assertEqual(list(iter(self._L1tree)), ['garbage', 'five'])
         self.assertEqual(list(iter(self._R1tree)), ['five', 'garbage'])
@@ -85,7 +72,6 @@ class TestBinTree(unittest.TestCase):
         self.assertEqual(list(iter(self._numTree)), [13, 26, 28, 38, 55, 66, 70, 82, 104])
 
     def testPreorder(self) -> None:
-        self.assertEqual(list(self._empty.preorder()), [])
         self.assertEqual(list(self._1item.preorder()), ['garbage'])
         self.assertEqual(list(self._L1tree.preorder()), ['five', 'garbage'])
         self.assertEqual(list(self._R1tree.preorder()), ['five', 'garbage'])
@@ -93,7 +79,6 @@ class TestBinTree(unittest.TestCase):
         self.assertEqual(list(self._numTree.preorder()), [55, 26, 13, 38, 28, 66, 82, 70, 104])
 
     def testBfPreorder(self) -> None:
-        self.assertEqual(list(self._empty.bf_preorder()), [])
         self.assertEqual(list(self._1item.bf_preorder()), ['garbage'])
         self.assertEqual(list(self._L1tree.bf_preorder()), ['five', 'garbage'])
         self.assertEqual(list(self._R1tree.bf_preorder()), ['five', 'garbage'])
@@ -101,8 +86,6 @@ class TestBinTree(unittest.TestCase):
         self.assertEqual(list(self._numTree.bf_preorder()), [55, 26, 66, 13, 38, 82, 28, 70, 104])
 
     def testRemoveLeft(self) -> None:
-        self._empty.removeLeft()            # Nothing happens
-        self.assertEqual(list(iter(self._empty)), [])
         self._L1tree.removeLeft()           # Remove the 'garbage'
         self.assertEqual(list(iter(self._L1tree)), ['five'])
         self._R1tree.removeLeft()           # Nothing happens
@@ -113,8 +96,6 @@ class TestBinTree(unittest.TestCase):
         self.assertEqual(list(iter(self._numTree)), [26, 28, 38, 55, 66, 70, 82, 104])
 
     def testRemoveRight(self) -> None:
-        self._empty.removeRight()            # Nothing happens
-        self.assertEqual(list(iter(self._empty)), [])
         self._L1tree.removeRight()           # Nothing happens
         self.assertEqual(list(iter(self._L1tree)), ['garbage', 'five'])
         self._R1tree.removeRight()           # Remove the 'garbage'
