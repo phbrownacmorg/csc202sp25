@@ -8,7 +8,7 @@ class TestSearch(unittest.TestCase):
     # will be executed as a unit test
 
     def setUp(self) -> None:
-        self._empty = []
+        self._empty: list[str] = []
         self._one = ['a']
         self._odd = ['a', 'c', 'e', 'g', 'i']
         self._even = ['a', 'c', 'e', 'g', 'i', 'k']

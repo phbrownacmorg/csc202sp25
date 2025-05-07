@@ -48,7 +48,7 @@ class BinTree[T](Collection[T]):
     def parent(self) -> 'BinTree[T]':
         """Return SELF's parent, but only if SELF is not the root."""
         # Pre:
-        assert not self.isRoot()
+        assert not self.isRoot() and self._parent is not None # Second part for mypy
         return self._parent
 
     def left(self) -> 'BinTree[T]':
@@ -166,7 +166,7 @@ class BinTree[T](Collection[T]):
     def removeLeft(self) -> None:
         """Convenience function to remove SELF's left subtree from the tree.
             Does nothing if SELF has no left subtree."""
-        if self.hasLeftChild():
+        if self.hasLeftChild() and self._left is not None: # Second part is for mypy
             self._left._parent = None
         self._left = None
         # Post:
@@ -175,7 +175,7 @@ class BinTree[T](Collection[T]):
     def removeRight(self) -> None:
         """Convenience function to remove SELF's right subtree from the tree.
             Does nothing if SELF has no right subtree."""
-        if self.hasRightChild():
+        if self.hasRightChild() and self._right is not None: # Second part is for mypy
             self._right._parent = None
         self._right = None
         # Post:

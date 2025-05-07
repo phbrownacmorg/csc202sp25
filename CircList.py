@@ -29,10 +29,11 @@ class CircList[T]:
         """Return a string representation of the list."""
         result: str = "∅"
         if not self.empty():
+            assert self._tail is not None and self._tail._next is not None, "for mypy"
             current: LList[T] = self._tail._next
             result = '❬' + str(current._data) + '❭➞'
             while current._next is not self._tail._next:
-                current = current._next
+                current = current._next                         # type: ignore
                 result = result + '❬' + str(current._data) + '❭➞'
             result = result + "∅"
         return result
@@ -42,10 +43,10 @@ class CircList[T]:
         result: int = 0 # Correct if list is empty
         if not self.empty():
             result = 1
-            current: LList[T] = self._tail._next
+            current: LList[T] = self._tail._next # type: ignore
             while current != self._tail:
                 result += 1
-                current = current._next
+                current = current._next # type: ignore
         return result
     
     def index(self, value: T) -> int:
@@ -55,9 +56,9 @@ class CircList[T]:
             raise ValueError('Value "{0}" is not in empty list'.format(value))
         else:
             idx: int = 0
-            current: LList[T] = self._tail._next
+            current: LList[T] = self._tail._next # type: ignore
             while current._data != value and current is not self._tail:
-                current = current._next
+                current = current._next # type: ignore
                 idx += 1
             if current._data != value: # value wasn't in the list
                 raise ValueError('Value "{0}" is not in the list'.format(value))
@@ -105,15 +106,19 @@ class CircList[T]:
         # Special case for one node
         if length == 1:
             assert idx == 0, "Miscount"
-            value = self._tail._data
+            value = self._tail._data # type: ignore
             self._tail = None
         # More than one node
         else:
+            assert self._tail is not None
             prev: LList[T] = self._tail # Node *before* the one to delete
             while idx > 0:
+                assert prev._next is not None, "for mypy"
                 prev = prev._next
                 idx -= 1
+            assert prev._next is not None, "for mypy"
             victim: LList[T] = prev._next
+            assert victim._data is not None, 'for mypy'
             value = victim._data
             prev._next = victim._next
             if self._tail is victim:

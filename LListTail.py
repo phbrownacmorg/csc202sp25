@@ -55,6 +55,7 @@ class LListTail[T]:
         """Add a value to the front of the list."""
         self._head.add(value)
         if not self._tail.empty(): # Added to an empty list
+            assert self._tail._next is not None, 'for mypy'
             self._tail = self._tail._next
         # Post:
         assert not self.empty() and self._invariant(), "Add failed"
@@ -76,6 +77,7 @@ class LListTail[T]:
             # Find the node to be deleted (O(n))
             current: LList[T] = self._head
             while idx > 0:
+                assert current._next is not None, 'Reached sentinel with idx > 0'
                 current = current._next
                 idx = idx - 1
             # Verify we're looking at the last node

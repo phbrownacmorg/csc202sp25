@@ -5,7 +5,7 @@ def tree(branch_len: float, t: turtle.Turtle) -> None:
     min_branch: int = 6 # Minimum length of a branch in pixels
     fork_angle: int = 40 # angle between the two sides of a fork
     right_angle: float = fork_angle/2 * (0.5 + 0.5 * random.random()) # Angle between the parent and the right fork
-    left_angle: int = fork_angle/2 # Angle between the parent and the left fork
+    left_angle: float = fork_angle/2 * (0.5 + 0.5 * random.random()) # Angle between the parent and the left fork
     length_reduction: int = 12 # How much shorter the branch gets each time
 
     # Set the color according to how close we are to the leaves
@@ -15,7 +15,7 @@ def tree(branch_len: float, t: turtle.Turtle) -> None:
 
     # Set the thickness according to how deep we are in the tree
     initial_width = t.width()
-    t.width(branch_len / length_reduction)
+    t.width(round(branch_len / length_reduction))
 
     if branch_len > min_branch:
         t.forward(branch_len)

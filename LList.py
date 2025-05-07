@@ -31,9 +31,12 @@ class LList[T]:
         return self._data is None and self._next is None
     
     def data(self) -> T:
+        # Pre:
+        assert self._data is not None, 'Called data() on a sentinel node'
         return self._data
     
     def rest(self) -> 'LList[T]':
+        assert self._next is not None, 'Called rest() on a sentinel node'
         return self._next
 
     def __str__(self) -> str:
@@ -59,6 +62,7 @@ class LList[T]:
         elif self._data == value: # If this is the node we're looking for, return 0
             result = 0
         else: # VALUE might be farther along, but it isn't in this node
+            assert self._next is not None, 'for mypy' # already established self is not empty()
             result = 1 + self._next.index(value)
         # Post:
         assert result >= 0

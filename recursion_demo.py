@@ -8,7 +8,7 @@ def make_numlist() -> LList[float]:
 
 def sumlist(numlist: LList[float]) -> float:
     """Sum a list of numbers, recursively."""
-    total: int = 0 # Handles the base case (empty list)
+    total: float = 0 # Handles the base case (empty list)
     if not numlist.empty():
         total = numlist.data() + sumlist(numlist.rest())
     return total
@@ -53,7 +53,7 @@ def fastexpt(a: float, b: int) -> float:
         half: float = fastexpt(a, b // 2)
         result = half * half # (a ** (b // 2)) ** 2
     else:            # Recursive case #3: b > 0, b is odd
-        half: float = fastexpt(a, b // 2)
+        half = fastexpt(a, b // 2)
         result = half * half * a # ((a ** (b // 2)) ** 2) * a
     return result
 

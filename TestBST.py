@@ -222,7 +222,7 @@ class TestBST(unittest.TestCase):
     # Remove by value
 
     def testRemoveLeaf(self) -> None:
-        self._bothSidesNow = self._bothSidesNow.remove('garbage')
+        self._bothSidesNow = self._bothSidesNow.remove('garbage')       # type: ignore
         self.assertEqual(list(iter(self._bothSidesNow)), ['five', 'infinity', 'left'])
         # Verify structure
         self.assertEqual(self._bothSidesNow.data(), 'infinity')
@@ -231,7 +231,7 @@ class TestBST(unittest.TestCase):
         self.assertFalse(self._bothSidesNow.left().hasRightChild())
 
     def testRemoveRoot(self) -> None:
-        self._L1tree = self._L1tree.remove('garbage')
+        self._L1tree = self._L1tree.remove('garbage')       # type: ignore
         self.assertEqual(self._L1tree.data(), 'five')
         self.assertFalse(self._L1tree.hasLeftChild())
         self.assertFalse(self._L1tree.hasRightChild())
@@ -246,7 +246,7 @@ class TestBST(unittest.TestCase):
         self.assertFalse(self._numTree.left().right().hasRightChild())
 
     def testRemove1ChildRight(self) -> None:
-        self._numTree = self._numTree.remove(66)
+        self._numTree = self._numTree.remove(66)        # type: ignore
         self.assertEqual(list(iter(self._numTree)), [13, 26, 28, 38, 55, 70, 82, 104])
         # Verify structure
         self.assertEqual(self._numTree.right().data(), 82)
@@ -254,7 +254,7 @@ class TestBST(unittest.TestCase):
         self.assertEqual(self._numTree.right().right().data(), 104)
 
     def testRemove2Children(self) -> None:
-        self._numTree = self._numTree.remove(26)
+        self._numTree = self._numTree.remove(26)        # type: ignore
         self.assertEqual(list(iter(self._numTree)), [13, 28, 38, 55, 66, 70, 82, 104])
         # Verify structure
         self.assertEqual(self._numTree.left().data(), 28)

@@ -28,8 +28,8 @@ def draw_concentric_circles(radius: float, num_rings: float, t: turtle.Turtle) -
         draw_concentric_circles(radius / num_rings * (num_rings - 1), num_rings - 1, t)
 
 def draw_target(radius: float, num_rings: float, t: turtle.Turtle) -> None:
-    colors: tuple[str] = ('yellow', 'red', 'blue', 'black', 'white')
-    draw_circle(radius, t, colors[(num_rings - 1) // 2])
+    colors: tuple[str,...] = ('yellow', 'red', 'blue', 'black', 'white')
+    draw_circle(radius, t, colors[(num_rings - 1) // 2]) # type: ignore
     if num_rings > 1:
         draw_target(radius / num_rings * (num_rings - 1), num_rings - 1, t)
 
